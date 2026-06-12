@@ -124,6 +124,17 @@ function demarrerNuit(salle) {
     });
   }
 
+  // Petite Fille — reçoit la première lettre d'un loup
+const petiteFille = salle.joueurs.find(j => j.role === 'Petite Fille' && j.vivant);
+if (petiteFille) {
+  const loupsVivants = salle.joueurs.filter(j => estLoup(j) && j.vivant);
+  if (loupsVivants.length > 0) {
+    const loupAleatoire = loupsVivants[Math.floor(Math.random() * loupsVivants.length)];
+    io.to(petiteFille.id).emit('indice_petite_fille', {
+      lettre: loupAleatoire.pseudo[0].toUpperCase()
+    });
+  }
+}
   const salvateur = salle.joueurs.find(j => j.role === 'Salvateur' && j.vivant);
   if (salvateur) {
     io.to(salvateur.id).emit('action_requise', {
